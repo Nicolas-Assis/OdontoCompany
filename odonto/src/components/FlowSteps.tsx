@@ -1,0 +1,59 @@
+import { Steps, Card, Typography } from "antd";
+
+const { Paragraph } = Typography;
+
+export function FlowSteps() {
+  return (
+    <section className="lp-section" id="flow">
+      <div className="lp-container lp-flow-grid">
+        <div>
+          <header className="lp-section-header">
+            <h2>Como funciona o seu atendimento</h2>
+            <p>Do primeiro contato ao sorriso pronto em três etapas simples.</p>
+          </header>
+        </div>
+        <Card
+          bordered={false}
+          style={{ boxShadow: "0 10px 25px rgba(15,23,42,0.08)" }}
+        >
+          <Steps
+            direction="vertical"
+            current={2}
+            items={[
+              {
+                title: "Agendamento pelo WhatsApp",
+                description: (
+                  <Paragraph type="secondary">
+                    Você escolhe o tipo de serviço e envia sua mensagem com
+                    todos os detalhes já preenchidos. Nossa equipe responde
+                    rapidamente para confirmar o melhor horário.
+                  </Paragraph>
+                ),
+              },
+              {
+                title: "Avaliação completa na clínica",
+                description: (
+                  <Paragraph type="secondary">
+                    Realizamos uma avaliação personalizada, explicamos o plano
+                    de tratamento, valores, formas de pagamento e tiramos todas
+                    as suas dúvidas.
+                  </Paragraph>
+                ),
+              },
+              {
+                title: "Tratamento e acompanhamento",
+                description: (
+                  <Paragraph type="secondary">
+                    Iniciamos o tratamento com foco em conforto, resultado
+                    estético e saúde bucal a longo prazo, acompanhando você em
+                    cada etapa.
+                  </Paragraph>
+                ),
+              },
+            ]}
+          />
+        </Card>
+      </div>
+    </section>
+  );
+}
