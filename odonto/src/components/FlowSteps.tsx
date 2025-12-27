@@ -12,12 +12,9 @@ export function FlowSteps() {
             <p>Do primeiro contato ao sorriso pronto em três etapas simples.</p>
           </header>
         </div>
-        <Card
-          bordered={false}
-          style={{ boxShadow: "0 10px 25px rgba(15,23,42,0.08)" }}
-        >
+        <Card bordered={false} className="lp-card">
           <Steps
-            direction="vertical"
+            orientation="vertical"
             current={2}
             items={[
               {

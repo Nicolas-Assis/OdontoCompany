@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { type DentalService, buildWhatsAppLink } from "../lib/whatsapp";
+import { type DentalService } from "../lib/whatsapp";
 import { trackEvent } from "../lib/analytics";
 import { Row, Col, Card, Tag, Button, Space, Typography, Drawer } from "antd";
 import { WhatsAppOutlined } from "@ant-design/icons";
@@ -33,10 +33,13 @@ export function Services({
 
   const closeDrawer = () => setDetailService(null);
 
-  const drawerWhatsHref =
-    detailService != null
-      ? buildWhatsAppLink({ phone: CLINIC_PHONE, service: detailService })
-      : undefined;
+  const openWhatsAppQuiz = (service: DentalService) => {
+    window.dispatchEvent(
+      new CustomEvent("lp:open-whatsapp-quiz", {
+        detail: { phone: CLINIC_PHONE, service },
+      })
+    );
+  };
 
   return (
     <section className="lp-section" id="services">
@@ -53,14 +56,7 @@ export function Services({
                 <Card
                   hoverable
                   onClick={() => handleSelect(service)}
-                  style={
-                    isActive
-                      ? {
-                          borderColor: "#059669",
-                          boxShadow: "0 0 0 1px #05966933",
-                        }
-                      : undefined
-                  }
+                  className={`lp-card${isActive ? " lp-card--active" : ""}`}
                 >
                   <Space
                     orientation="vertical"
@@ -105,7 +101,7 @@ export function Services({
         <Drawer
           title={detailService?.name}
           placement="right"
-          width={380}
+          size={380}
           onClose={closeDrawer}
           open={detailService != null}
         >
@@ -118,23 +114,19 @@ export function Services({
                 <br />
                 <Text strong>{detailService.name}</Text>.
               </Paragraph>
-              {drawerWhatsHref && (
-                <Button
-                  type="primary"
-                  icon={<WhatsAppOutlined />}
-                  block
-                  href={drawerWhatsHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() =>
-                    trackEvent("cta_whatsapp_click", {
-                      serviceId: detailService.id,
-                    })
-                  }
-                >
-                  Avaliar meu caso no WhatsApp
-                </Button>
-              )}
+              <Button
+                type="primary"
+                icon={<WhatsAppOutlined />}
+                block
+                onClick={() => {
+                  trackEvent("cta_whatsapp_click", {
+                    serviceId: detailService.id,
+                  });
+                  openWhatsAppQuiz(detailService);
+                }}
+              >
+                Avaliar meu caso no WhatsApp
+              </Button>
             </Space>
           )}
         </Drawer>

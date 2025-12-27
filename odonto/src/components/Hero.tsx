@@ -1,7 +1,12 @@
-import { buildWhatsAppLink, type DentalService } from "../lib/whatsapp";
+import type { DentalService } from "../lib/whatsapp";
 import { trackEvent } from "../lib/analytics";
-import { Row, Col, Typography, Button, Rate, Space, Card, Avatar } from "antd";
+import { Typography, Button, Rate, Space, Card, Avatar } from "antd";
 import { WhatsAppOutlined, TeamOutlined } from "@ant-design/icons";
+import heroPhoto from "../assets/salaoprincipal.jpg";
+import heroGif from "../assets/gifodonto.gif";
+import photoRoom from "../assets/salaatendimetno.jpg";
+import photoThumbsUp from "../assets/joianha.jpg";
+import photoClient from "../assets/cliente1.jpg";
 
 const { Title, Paragraph, Text } = Typography;
 const CLINIC_PHONE = "5562986018386";
@@ -11,16 +16,15 @@ interface HeroProps {
 }
 
 export function Hero({ highlightedService }: HeroProps) {
-  const href = buildWhatsAppLink({
-    phone: CLINIC_PHONE,
-    service: highlightedService,
-  });
-
   const handleClick = () => {
     trackEvent("hero_whatsapp_click", {
       serviceId: highlightedService?.id ?? null,
     });
-    window.open(href, "_blank", "noopener,noreferrer");
+    window.dispatchEvent(
+      new CustomEvent("lp:open-whatsapp-quiz", {
+        detail: { phone: CLINIC_PHONE, service: highlightedService ?? null },
+      })
+    );
   };
 
   const scrollToServices = () => {
@@ -30,9 +34,13 @@ export function Hero({ highlightedService }: HeroProps) {
   return (
     <section className="lp-hero">
       <div className="lp-container">
-        <Row gutter={[32, 32]} align="middle" className="lp-hero-grid">
-          <Col xs={24} md={14} className="lp-hero-text">
-            <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+        <div className="lp-hero-grid">
+          <div className="lp-hero-text">
+            <Space
+              orientation="vertical"
+              size="middle"
+              style={{ width: "100%" }}
+            >
               <Text className="lp-pill">
                 Clínica Odontológica Especializada
               </Text>
@@ -59,7 +67,7 @@ export function Hero({ highlightedService }: HeroProps) {
                   Ver tratamentos
                 </Button>
               </Space>
-              <Space direction="vertical" size={4}>
+              <Space orientation="vertical" size={4}>
                 <Space size="middle" align="center">
                   <Rate allowHalf disabled defaultValue={4.9} />
                   <Text strong>4.9/5</Text>
@@ -75,15 +83,22 @@ export function Hero({ highlightedService }: HeroProps) {
                 </Space>
               </Space>
             </Space>
-          </Col>
-          <Col xs={24} md={10} className="lp-hero-card">
+          </div>
+
+          <div className="lp-hero-card">
             <Card className="lp-hero-card-inner" bordered={false}>
+              <img
+                src={heroPhoto}
+                alt="Ambiente da clínica"
+                className="lp-hero-photo"
+                loading="eager"
+              />
               <Text className="lp-hero-card-title">Agenda desta semana</Text>
               <Paragraph className="lp-hero-card-subtitle">
                 Poucas vagas disponíveis para primeira avaliação.
               </Paragraph>
               <Space
-                direction="vertical"
+                orientation="vertical"
                 size="small"
                 style={{ width: "100%" }}
               >
@@ -107,8 +122,76 @@ export function Hero({ highlightedService }: HeroProps) {
                 </Space>
               </Space>
             </Card>
-          </Col>
-        </Row>
+          </div>
+        </div>
+
+        <div className="lp-hero-gallery" aria-label="Galeria da clínica">
+          <div className="lp-hero-gallery-header">
+            <Text strong>Conheça a clínica</Text>
+            <Text type="secondary">
+              Estrutura moderna, ambiente acolhedor e atendimento humano.
+            </Text>
+          </div>
+
+          <div className="lp-media-grid">
+            <div className="lp-media-tile">
+              <img
+                src={heroGif}
+                alt="Animação de limpeza dental"
+                className="lp-media-img lp-media-img--contain"
+                loading="lazy"
+                decoding="async"
+              />
+              <Text className="lp-media-caption">Higiene e prevenção</Text>
+            </div>
+
+            <div className="lp-media-tile">
+              <img
+                src={photoRoom}
+                alt="Sala de atendimento"
+                className="lp-media-img"
+                loading="lazy"
+                decoding="async"
+              />
+              <Text className="lp-media-caption">Conforto no atendimento</Text>
+            </div>
+
+            <div className="lp-media-tile">
+              <img
+                src={heroPhoto}
+                alt="Recepção da clínica"
+                className="lp-media-img"
+                loading="lazy"
+                decoding="async"
+              />
+              <Text className="lp-media-caption">Ambiente acolhedor</Text>
+            </div>
+
+            <div className="lp-media-tile">
+              <img
+                src={photoClient}
+                alt="Pessoa sorrindo"
+                className="lp-media-img"
+                loading="lazy"
+                decoding="async"
+              />
+              <Text className="lp-media-caption">Resultados reais</Text>
+            </div>
+
+            <div className="lp-media-tile lp-media-tile--wide">
+              <img
+                src={photoThumbsUp}
+                alt="Satisfação do paciente"
+                className="lp-media-img"
+                loading="lazy"
+                decoding="async"
+              />
+              <Text className="lp-media-caption">
+                Atendimento humanizado e acompanhamento
+              </Text>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

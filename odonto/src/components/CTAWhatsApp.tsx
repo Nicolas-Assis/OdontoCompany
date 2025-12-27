@@ -1,47 +1,124 @@
-import { useState } from "react";
-import { buildWhatsAppLink, type DentalService } from "../lib/whatsapp";
+import { useEffect, useMemo, useState } from "react";
+import {
+  buildWhatsAppLink,
+  type DentalService,
+  type WhatsAppQuizAnswers,
+} from "../lib/whatsapp";
 import { trackEvent } from "../lib/analytics";
-import { Button, Card, Modal, Typography, Space } from "antd";
+import {
+  Button,
+  Card,
+  Modal,
+  Typography,
+  Space,
+  Steps,
+  Radio,
+  Input,
+} from "antd";
 import { WhatsAppOutlined } from "@ant-design/icons";
 
 const { Paragraph, Text } = Typography;
-const CLINIC_PHONE = "5562986018386"; // Substitua pelo número real
+const CLINIC_PHONE = "5562986018386";
 
 interface CTAWhatsAppProps {
   selectedService: DentalService | null;
 }
 
-export function CTAWhatsApp({ selectedService }: CTAWhatsAppProps) {
-  const [showSelectModal, setShowSelectModal] = useState(false);
+type OpenQuizEventDetail = {
+  phone?: string;
+  service?: DentalService | null;
+};
 
-  const href =
-    selectedService != null
-      ? buildWhatsAppLink({ phone: CLINIC_PHONE, service: selectedService })
-      : undefined;
+function isOpenQuizEvent(
+  value: unknown
+): value is CustomEvent<OpenQuizEventDetail> {
+  return (
+    typeof value === "object" && value !== null && "detail" in (value as any)
+  );
+}
+
+export function CTAWhatsApp({ selectedService }: CTAWhatsAppProps) {
+  const [quizOpen, setQuizOpen] = useState(false);
+  const [quizStep, setQuizStep] = useState(0);
+  const [serviceOverride, setServiceOverride] = useState<DentalService | null>(
+    null
+  );
+  const [phoneOverride, setPhoneOverride] = useState<string | null>(null);
+
+  const [quizAnswers, setQuizAnswers] = useState<WhatsAppQuizAnswers>({});
+
+  const activeService = serviceOverride ?? selectedService;
+  const activePhone = phoneOverride ?? CLINIC_PHONE;
+
+  const href = useMemo(
+    () =>
+      buildWhatsAppLink({
+        phone: activePhone,
+        service: activeService,
+        quiz: quizAnswers,
+      }),
+    [activePhone, activeService, quizAnswers]
+  );
+
+  const canGoNext = useMemo(() => {
+    if (quizStep === 0) return Boolean(quizAnswers.goal);
+    if (quizStep === 1) return Boolean(quizAnswers.urgency);
+    if (quizStep === 2) return true;
+    return true;
+  }, [quizAnswers.goal, quizAnswers.urgency, quizStep]);
+
+  const openQuiz = (detail?: OpenQuizEventDetail) => {
+    setPhoneOverride(detail?.phone ?? null);
+    setServiceOverride(detail?.service ?? null);
+    setQuizOpen(true);
+    setQuizStep(0);
+    setQuizAnswers({});
+  };
 
   const handleClick = () => {
-    if (!selectedService || !href) {
-      setShowSelectModal(true);
-      return;
-    }
+    openQuiz({ phone: CLINIC_PHONE, service: selectedService });
+  };
 
+  useEffect(() => {
+    const handler = (event: Event) => {
+      if (!isOpenQuizEvent(event)) return;
+      openQuiz(event.detail);
+    };
+
+    window.addEventListener("lp:open-whatsapp-quiz", handler);
+    return () => window.removeEventListener("lp:open-whatsapp-quiz", handler);
+  }, []);
+
+  const closeQuiz = () => {
+    setQuizOpen(false);
+    setServiceOverride(null);
+    setPhoneOverride(null);
+  };
+
+  const goNext = () => setQuizStep((prev) => Math.min(prev + 1, 2));
+  const goBack = () => setQuizStep((prev) => Math.max(prev - 1, 0));
+
+  const sendToWhatsApp = () => {
     trackEvent("cta_whatsapp_click", {
-      serviceId: selectedService.id,
+      serviceId: activeService?.id ?? null,
+      quizGoal: quizAnswers.goal ?? null,
+      quizUrgency: quizAnswers.urgency ?? null,
+      quizBestTime: quizAnswers.bestTime ?? null,
     });
 
     window.open(href, "_blank", "noopener,noreferrer");
+    closeQuiz();
   };
 
-  const handleGoToServices = () => {
-    setShowSelectModal(false);
-    document.getElementById("services")?.scrollIntoView({ behavior: "smooth" });
-  };
+  const quizTitle = activeService
+    ? `Agendar avaliação — ${activeService.name}`
+    : "Agendar avaliação";
 
   return (
     <section className="lp-section lp-cta-section">
       <div className="lp-container">
         <Card bordered={false} className="lp-cta">
-          <Space direction="vertical" size="small">
+          <Space orientation="vertical" size="small">
             <h2>Pronto para cuidar do seu sorriso?</h2>
             <Paragraph>
               {selectedService ? (
@@ -52,8 +129,8 @@ export function CTAWhatsApp({ selectedService }: CTAWhatsAppProps) {
                 </>
               ) : (
                 <>
-                  Selecione um tratamento para montar sua mensagem
-                  personalizada.
+                  Responda rapidinho um mini-questionário e já abrimos o
+                  WhatsApp com a mensagem pronta.
                 </>
               )}
             </Paragraph>
@@ -71,20 +148,130 @@ export function CTAWhatsApp({ selectedService }: CTAWhatsAppProps) {
       </div>
 
       <Modal
-        open={showSelectModal}
-        onCancel={() => setShowSelectModal(false)}
+        open={quizOpen}
+        onCancel={closeQuiz}
         footer={null}
-        title="Escolha um tratamento primeiro"
+        title={quizTitle}
+        destroyOnClose
       >
-        <Space direction="vertical" size="middle" style={{ width: "100%" }}>
-          <Paragraph>
-            Para personalizar sua mensagem no WhatsApp, selecione primeiro um
-            tratamento na seção{" "}
-            <Text strong>"Tratamentos que transformam sorrisos"</Text>.
-          </Paragraph>
-          <Button type="primary" onClick={handleGoToServices} block>
-            Ver tratamentos
-          </Button>
+        <Space direction="vertical" size="large" style={{ width: "100%" }}>
+          <Steps
+            current={quizStep}
+            items={[
+              { title: "Objetivo" },
+              { title: "Urgência" },
+              { title: "Horário" },
+            ]}
+          />
+
+          {quizStep === 0 && (
+            <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+              <Paragraph style={{ marginBottom: 0 }}>
+                Qual é o seu objetivo agora?
+              </Paragraph>
+              <Radio.Group
+                value={quizAnswers.goal}
+                onChange={(e) =>
+                  setQuizAnswers((prev) => ({ ...prev, goal: e.target.value }))
+                }
+              >
+                <Space direction="vertical">
+                  <Radio value="Avaliação e orçamento">
+                    Avaliação e orçamento
+                  </Radio>
+                  <Radio value="Alívio de dor / urgência">
+                    Alívio de dor / urgência
+                  </Radio>
+                  <Radio value="Estética (clareamento / facetas)">
+                    Estética (clareamento / facetas)
+                  </Radio>
+                  <Radio value="Aparelho / alinhamento">
+                    Aparelho / alinhamento
+                  </Radio>
+                  <Radio value="Outro">Outro</Radio>
+                </Space>
+              </Radio.Group>
+            </Space>
+          )}
+
+          {quizStep === 1 && (
+            <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+              <Paragraph style={{ marginBottom: 0 }}>
+                Com que urgência você precisa de atendimento?
+              </Paragraph>
+              <Radio.Group
+                value={quizAnswers.urgency}
+                onChange={(e) =>
+                  setQuizAnswers((prev) => ({
+                    ...prev,
+                    urgency: e.target.value,
+                  }))
+                }
+              >
+                <Space direction="vertical">
+                  <Radio value="Hoje / o quanto antes">
+                    Hoje / o quanto antes
+                  </Radio>
+                  <Radio value="Nesta semana">Nesta semana</Radio>
+                  <Radio value="Sem pressa">Sem pressa</Radio>
+                </Space>
+              </Radio.Group>
+              <Paragraph type="secondary" style={{ margin: 0 }}>
+                Se quiser, descreva rapidamente sua necessidade:
+              </Paragraph>
+              <Input.TextArea
+                value={quizAnswers.notes}
+                onChange={(e) =>
+                  setQuizAnswers((prev) => ({ ...prev, notes: e.target.value }))
+                }
+                rows={3}
+                placeholder="Ex: sensibilidade, dor ao mastigar, dente quebrado..."
+              />
+            </Space>
+          )}
+
+          {quizStep === 2 && (
+            <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+              <Paragraph style={{ marginBottom: 0 }}>
+                Qual o melhor horário para te responder?
+              </Paragraph>
+              <Radio.Group
+                value={quizAnswers.bestTime}
+                onChange={(e) =>
+                  setQuizAnswers((prev) => ({
+                    ...prev,
+                    bestTime: e.target.value,
+                  }))
+                }
+              >
+                <Space direction="vertical">
+                  <Radio value="Manhã">Manhã</Radio>
+                  <Radio value="Tarde">Tarde</Radio>
+                  <Radio value="Noite">Noite</Radio>
+                  <Radio value="Qualquer horário">Qualquer horário</Radio>
+                </Space>
+              </Radio.Group>
+            </Space>
+          )}
+
+          <Space style={{ width: "100%", justifyContent: "space-between" }}>
+            <Button onClick={quizStep === 0 ? closeQuiz : goBack}>
+              {quizStep === 0 ? "Cancelar" : "Voltar"}
+            </Button>
+            {quizStep < 2 ? (
+              <Button type="primary" onClick={goNext} disabled={!canGoNext}>
+                Próximo
+              </Button>
+            ) : (
+              <Button
+                type="primary"
+                icon={<WhatsAppOutlined />}
+                onClick={sendToWhatsApp}
+              >
+                Abrir WhatsApp
+              </Button>
+            )}
+          </Space>
         </Space>
       </Modal>
     </section>
