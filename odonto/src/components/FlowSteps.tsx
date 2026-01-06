@@ -15,9 +15,10 @@ export function FlowSteps() {
         <Card bordered={false} className="lp-card">
           <Steps
             orientation="vertical"
-            current={2}
+            current={0}
             items={[
               {
+                icon: <span className="lp-step-icon">1</span>,
                 title: "Agendamento pelo WhatsApp",
                 description: (
                   <Paragraph type="secondary">
@@ -28,6 +29,7 @@ export function FlowSteps() {
                 ),
               },
               {
+                icon: <span className="lp-step-icon">2</span>,
                 title: "Avaliação completa na clínica",
                 description: (
                   <Paragraph type="secondary">
@@ -38,6 +40,7 @@ export function FlowSteps() {
                 ),
               },
               {
+                icon: <span className="lp-step-icon">3</span>,
                 title: "Tratamento e acompanhamento",
                 description: (
                   <Paragraph type="secondary">

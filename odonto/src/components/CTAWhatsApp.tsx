@@ -33,7 +33,9 @@ function isOpenQuizEvent(
   value: unknown
 ): value is CustomEvent<OpenQuizEventDetail> {
   return (
-    typeof value === "object" && value !== null && "detail" in (value as any)
+    typeof value === "object" &&
+    value !== null &&
+    "detail" in (value as Record<string, unknown>)
   );
 }
 
@@ -117,7 +119,7 @@ export function CTAWhatsApp({ selectedService }: CTAWhatsAppProps) {
   return (
     <section className="lp-section lp-cta-section">
       <div className="lp-container">
-        <Card bordered={false} className="lp-cta">
+        <Card variant={"borderless"} className="lp-cta">
           <Space orientation="vertical" size="small">
             <h2>Pronto para cuidar do seu sorriso?</h2>
             <Paragraph>
@@ -158,9 +160,18 @@ export function CTAWhatsApp({ selectedService }: CTAWhatsAppProps) {
           <Steps
             current={quizStep}
             items={[
-              { title: "Objetivo" },
-              { title: "Urgência" },
-              { title: "Horário" },
+              {
+                icon: <span className="lp-step-icon">1</span>,
+                title: "Objetivo",
+              },
+              {
+                icon: <span className="lp-step-icon">2</span>,
+                title: "Urgência",
+              },
+              {
+                icon: <span className="lp-step-icon">3</span>,
+                title: "Horário",
+              },
             ]}
           />
 

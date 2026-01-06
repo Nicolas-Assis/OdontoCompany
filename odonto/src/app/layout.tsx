@@ -10,7 +10,15 @@ export function RootLayout({ children }: RootLayoutProps) {
     <div className="lp-root">
       <header className="lp-header">
         <div className="lp-container lp-header-inner">
-          <span className="lp-logo">Odonto Sorriso</span>
+          <div className="lp-logo">
+            <img
+              src="/logoodc.png"
+              alt="Odonto Company"
+              className="lp-logo-img"
+              loading="eager"
+              decoding="async"
+            />
+          </div>
           <nav className="lp-nav">
             <a href="#services">Serviços</a>
             <a href="#flow">Como funciona</a>

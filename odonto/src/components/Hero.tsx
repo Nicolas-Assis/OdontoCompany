@@ -1,12 +1,16 @@
 import type { DentalService } from "../lib/whatsapp";
 import { trackEvent } from "../lib/analytics";
 import { Typography, Button, Rate, Space, Card, Avatar } from "antd";
-import { WhatsAppOutlined, TeamOutlined } from "@ant-design/icons";
+import { WhatsAppOutlined } from "@ant-design/icons";
 import heroPhoto from "../assets/salaoprincipal.jpg";
-import heroGif from "../assets/gifodonto.gif";
 import photoRoom from "../assets/salaatendimetno.jpg";
-import photoThumbsUp from "../assets/joianha.jpg";
+import dentistsCard from "../assets/cardDentistas.png";
 import photoClient from "../assets/cliente1.jpg";
+import dentist1 from "../assets/dentista1.jpg";
+import dentist2 from "../assets/dentista2.jpg";
+import dentist3 from "../assets/dentista3.jpg";
+import dentist4 from "../assets/dentista4.jpg";
+import dentist5 from "../assets/dentista5.jpg";
 
 const { Title, Paragraph, Text } = Typography;
 const CLINIC_PHONE = "5562986018386";
@@ -74,10 +78,12 @@ export function Hero({ highlightedService }: HeroProps) {
                   <Text type="secondary">+200 avaliações reais</Text>
                 </Space>
                 <Space size="small" align="center" className="lp-hero-badges">
-                  <Avatar.Group maxCount={3}>
-                    <Avatar icon={<TeamOutlined />} />
-                    <Avatar icon={<TeamOutlined />} />
-                    <Avatar icon={<TeamOutlined />} />
+                  <Avatar.Group>
+                    <Avatar src={dentist1} size={34} />
+                    <Avatar src={dentist2} size={34} />
+                    <Avatar src={dentist3} size={34} />
+                    <Avatar src={dentist4} size={34} />
+                    <Avatar src={dentist5} size={34} />
                   </Avatar.Group>
                   <Text type="secondary">Equipe pronta para receber você</Text>
                 </Space>
@@ -136,24 +142,21 @@ export function Hero({ highlightedService }: HeroProps) {
           <div className="lp-media-grid">
             <div className="lp-media-tile">
               <img
-                src={heroGif}
-                alt="Animação de limpeza dental"
-                className="lp-media-img lp-media-img--contain"
-                loading="lazy"
-                decoding="async"
-              />
-              <Text className="lp-media-caption">Higiene e prevenção</Text>
-            </div>
-
-            <div className="lp-media-tile">
-              <img
                 src={photoRoom}
                 alt="Sala de atendimento"
                 className="lp-media-img"
                 loading="lazy"
                 decoding="async"
               />
-              <Text className="lp-media-caption">Conforto no atendimento</Text>
+              <div className="lp-media-caption">
+                <Text strong className="lp-media-caption-title">
+                  Conforto no atendimento
+                </Text>
+                <Text type="secondary" className="lp-media-caption-text">
+                  Salas climatizadas, cadeiras novas e tecnologia para um
+                  atendimento confortável.
+                </Text>
+              </div>
             </div>
 
             <div className="lp-media-tile">
@@ -164,7 +167,15 @@ export function Hero({ highlightedService }: HeroProps) {
                 loading="lazy"
                 decoding="async"
               />
-              <Text className="lp-media-caption">Ambiente acolhedor</Text>
+              <div className="lp-media-caption">
+                <Text strong className="lp-media-caption-title">
+                  Ambiente acolhedor
+                </Text>
+                <Text type="secondary" className="lp-media-caption-text">
+                  Recepcionistas bem treinados, sistema de cadastro e sala de
+                  espera climatizada.
+                </Text>
+              </div>
             </div>
 
             <div className="lp-media-tile">
@@ -175,20 +186,34 @@ export function Hero({ highlightedService }: HeroProps) {
                 loading="lazy"
                 decoding="async"
               />
-              <Text className="lp-media-caption">Resultados reais</Text>
+              <div className="lp-media-caption">
+                <Text strong className="lp-media-caption-title">
+                  Resultados reais
+                </Text>
+                <Text type="secondary" className="lp-media-caption-text">
+                  Atendimento humanizado e acompanhamento em cada etapa do seu
+                  tratamento.
+                </Text>
+              </div>
             </div>
 
             <div className="lp-media-tile lp-media-tile--wide">
               <img
-                src={photoThumbsUp}
-                alt="Satisfação do paciente"
+                src={dentistsCard}
+                alt="Equipe de dentistas"
                 className="lp-media-img"
                 loading="lazy"
                 decoding="async"
               />
-              <Text className="lp-media-caption">
-                Atendimento humanizado e acompanhamento
-              </Text>
+              <div className="lp-media-caption">
+                <Text strong className="lp-media-caption-title">
+                  Equipe preparada
+                </Text>
+                <Text type="secondary" className="lp-media-caption-text">
+                  Dentistas bem treinados e capacitados, prontos para te atender
+                  com os melhores equipamentos.
+                </Text>
+              </div>
             </div>
           </div>
         </div>

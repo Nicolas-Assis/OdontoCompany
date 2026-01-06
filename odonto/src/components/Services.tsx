@@ -83,13 +83,6 @@ export function Services({
                       >
                         Ver detalhes
                       </Button>
-                      <Button
-                        type={isActive ? "primary" : "default"}
-                        size="small"
-                        onClick={() => handleSelect(service)}
-                      >
-                        Selecionar
-                      </Button>
                     </Space>
                   </Space>
                 </Card>
