@@ -1,53 +1,94 @@
 import { Steps, Card, Typography } from "antd";
+import {
+  WhatsAppOutlined,
+  MedicineBoxOutlined,
+  SmileOutlined,
+} from "@ant-design/icons";
 
-const { Paragraph } = Typography;
+const { Title, Paragraph } = Typography;
 
 export function FlowSteps() {
   return (
-    <section className="lp-section" id="flow">
-      <div className="lp-container lp-flow-grid">
-        <div>
-          <header className="lp-section-header">
-            <h2>Como funciona o seu atendimento</h2>
-            <p>Do primeiro contato ao sorriso pronto em três etapas simples.</p>
-          </header>
+    <section
+      className="lp-section bg-gradient-to-br from-emerald-50 via-white to-slate-50 py-16"
+      id="flow"
+    >
+      <div className="lp-container">
+        <div className="text-center mb-12 animate-fade-in">
+          <Title
+            level={2}
+            className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4"
+          >
+            Como funciona o seu atendimento
+          </Title>
+          <Paragraph className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
+            Do primeiro contato ao sorriso perfeito em três etapas simples e
+            rápidas.
+          </Paragraph>
         </div>
-        <Card bordered={false} className="lp-card">
+
+        <Card className="shadow-xl border-0 max-w-4xl mx-auto rounded-2xl hover:shadow-2xl transition-shadow duration-300">
           <Steps
-            orientation="vertical"
-            current={0}
+            direction="vertical"
+            current={-1}
+            className="py-4"
             items={[
               {
-                icon: <span className="lp-step-icon">1</span>,
-                title: "Agendamento pelo WhatsApp",
+                title: (
+                  <span className="text-lg font-semibold text-slate-800">
+                    1. Agendamento pelo WhatsApp
+                  </span>
+                ),
                 description: (
-                  <Paragraph type="secondary">
+                  <p className="text-slate-600 text-base leading-relaxed mt-2">
                     Você escolhe o tipo de serviço e envia sua mensagem com
                     todos os detalhes já preenchidos. Nossa equipe responde
-                    rapidamente para confirmar o melhor horário.
-                  </Paragraph>
+                    rapidamente para confirmar o melhor horário para você.
+                  </p>
+                ),
+                icon: (
+                  <div className="flex items-center justify-center w-12 h-12 rounded-full bg-emerald-100 text-emerald-600">
+                    <WhatsAppOutlined className="text-2xl" />
+                  </div>
                 ),
               },
               {
-                icon: <span className="lp-step-icon">2</span>,
-                title: "Avaliação completa na clínica",
+                title: (
+                  <span className="text-lg font-semibold text-slate-800">
+                    2. Avaliação completa na clínica
+                  </span>
+                ),
                 description: (
-                  <Paragraph type="secondary">
-                    Realizamos uma avaliação personalizada, explicamos o plano
-                    de tratamento, valores, formas de pagamento e tiramos todas
-                    as suas dúvidas.
-                  </Paragraph>
+                  <p className="text-slate-600 text-base leading-relaxed mt-2">
+                    Realizamos uma avaliação personalizada e detalhada,
+                    explicamos o plano de tratamento, valores transparentes,
+                    formas de pagamento flexíveis e tiramos todas as suas
+                    dúvidas.
+                  </p>
+                ),
+                icon: (
+                  <div className="flex items-center justify-center w-12 h-12 rounded-full bg-blue-100 text-blue-600">
+                    <MedicineBoxOutlined className="text-2xl" />
+                  </div>
                 ),
               },
               {
-                icon: <span className="lp-step-icon">3</span>,
-                title: "Tratamento e acompanhamento",
+                title: (
+                  <span className="text-lg font-semibold text-slate-800">
+                    3. Tratamento e acompanhamento
+                  </span>
+                ),
                 description: (
-                  <Paragraph type="secondary">
-                    Iniciamos o tratamento com foco em conforto, resultado
-                    estético e saúde bucal a longo prazo, acompanhando você em
-                    cada etapa.
-                  </Paragraph>
+                  <p className="text-slate-600 text-base leading-relaxed mt-2">
+                    Iniciamos o tratamento com foco em conforto máximo,
+                    resultado estético impecável e saúde bucal a longo prazo,
+                    acompanhando você em cada etapa até o sorriso perfeito.
+                  </p>
+                ),
+                icon: (
+                  <div className="flex items-center justify-center w-12 h-12 rounded-full bg-amber-100 text-amber-600">
+                    <SmileOutlined className="text-2xl" />
+                  </div>
                 ),
               },
             ]}

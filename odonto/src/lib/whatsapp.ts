@@ -1,5 +1,6 @@
 export type DentalService = {
   id: string;
+  slug: string;
   name: string;
   description: string;
 };

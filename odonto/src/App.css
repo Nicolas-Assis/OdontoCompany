@@ -4,6 +4,7 @@ html,
 body {
   width: 100%;
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 :root {
@@ -15,6 +16,52 @@ body {
   --lp-surface-solid: #ffffff;
   --lp-border: rgba(15, 23, 42, 0.08);
   --lp-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+}
+
+/* Animações globais */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.animate-slide-left {
+  animation: slideInLeft 0.6s ease-out;
+}
+
+.animate-slide-right {
+  animation: slideInRight 0.6s ease-out;
 }
 
 #root {
@@ -30,9 +77,14 @@ body {
 }
 
 .lp-container {
-  max-width: 1120px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 1.5rem;
+}
+
+.lp-section {
+  padding: 4rem 0;
+  transition: all 0.3s ease;
 }
 
 .lp-header {
@@ -41,8 +93,9 @@ body {
   z-index: 20;
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
-  background-color: #065f46;
-  border-bottom: 1px solid var(--lp-border);
+  background-color: #059669;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .lp-header-inner {
@@ -74,12 +127,14 @@ body {
 }
 
 .lp-nav a {
-  color: inherit;
+  color: #ffffff !important;
   text-decoration: none;
+  font-weight: 500;
 }
 
 .lp-nav a:hover {
-  color: var(--lp-brand);
+  color: #d1fae5 !important;
+  opacity: 0.9;
 }
 
 .lp-hero {
@@ -130,19 +185,32 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 999px;
+  border-radius: 0.75rem;
   border: 1px solid transparent;
   padding: 0.7rem 1.4rem;
   font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease,
-    transform 0.05s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lp-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.lp-btn:active {
+  transform: translateY(0);
 }
 
 .lp-btn-primary {
-  background: linear-gradient(135deg, var(--lp-brand), rgba(8, 132, 72, 0.78));
+  background: linear-gradient(135deg, #059669, #047857);
   color: #ffffff;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+}
+
+.lp-btn-primary:hover {
+  box-shadow: 0 8px 20px rgba(5, 150, 105, 0.4);
 }
 
 .lp-btn-primary:hover {
@@ -270,7 +338,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
-  padding: 0.75rem 0.95rem;
+  padding: 0.9rem 0.95rem;
+  min-height: 85px;
 }
 
 .lp-media-caption-title {
@@ -324,22 +393,30 @@ body {
 
 /* Acabamento consistente nos cards do Ant Design dentro da landing */
 .lp-root .ant-card {
-  border-radius: 1.25rem;
+  border-radius: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .lp-root .ant-card:not(.lp-hero-card-inner) {
   border: 1px solid rgba(15, 23, 42, 0.06);
-  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+}
+
+.lp-root .ant-card:hover {
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
+  transform: translateY(-2px);
 }
 
 .lp-card {
-  border-radius: 1.25rem;
+  border-radius: 1rem;
   background: var(--lp-surface-solid);
+  transition: all 0.3s ease;
 }
 
 .lp-card--active {
-  border-color: rgba(8, 132, 72, 0.28) !important;
-  box-shadow: 0 0 0 2px rgba(8, 132, 72, 0.12), 0 16px 32px rgba(15, 23, 42, 0.06) !important;
+  border-color: rgba(8, 132, 72, 0.4) !important;
+  box-shadow: 0 0 0 3px rgba(8, 132, 72, 0.1), 0 8px 24px rgba(8, 132, 72, 0.15) !important;
+  transform: translateY(-4px);
 }
 
 .lp-section {
@@ -455,7 +532,7 @@ body {
 
 .lp-cta-section {
   background: linear-gradient(120deg, rgba(8, 132, 72, 0.95), rgba(8, 132, 72, 0.75));
-  color: #ecfeff;
+  color: #ffffff !important;
 }
 
 .lp-cta {
@@ -471,11 +548,17 @@ body {
 
 .lp-cta h2 {
   margin: 0 0 0.4rem;
+  color: #ffffff !important;
 }
 
 .lp-cta p {
   margin: 0;
   max-width: 420px;
+  color: #ffffff !important;
+}
+
+.lp-cta .ant-typography {
+  color: #ffffff !important;
 }
 
 .lp-cta .lp-btn-primary {
@@ -484,10 +567,10 @@ body {
 }
 
 .lp-footer {
-  padding: 1.5rem 0 2rem;
-  border-top: 1px solid rgba(15, 23, 42, 0.04);
-  font-size: 0.85rem;
-  color: #6b7280;
+  padding: 2rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.9rem;
+  background-color: #047857;
 }
 
 @media (max-width: 900px) {
@@ -526,7 +609,7 @@ body {
 
 @media (max-width: 640px) {
   .lp-hero {
-    padding-top: 3rem;
+    padding-top: 2.5rem;
   }
 
   .lp-hero-photo {
@@ -535,6 +618,7 @@ body {
 
   .lp-media-grid {
     grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
   }
 
   .lp-media-tile--wide {
@@ -546,11 +630,15 @@ body {
   }
 
   .lp-section {
-    padding: 2.5rem 0;
+    padding: 3rem 0;
   }
 
   .lp-cta {
     align-items: flex-start;
-    padding: 1.25rem 1.25rem;
+    padding: 1.5rem;
+  }
+
+  .lp-container {
+    padding: 0 1rem;
   }
 }

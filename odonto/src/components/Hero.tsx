@@ -1,10 +1,18 @@
 import type { DentalService } from "../lib/whatsapp";
 import { trackEvent } from "../lib/analytics";
-import { Typography, Button, Rate, Space, Card, Avatar } from "antd";
+import {
+  Typography,
+  Button,
+  Rate,
+  Space,
+  Card,
+  Avatar,
+  Image,
+  Carousel,
+} from "antd";
 import { WhatsAppOutlined } from "@ant-design/icons";
 import heroPhoto from "../assets/salaoprincipal.jpg";
 import photoRoom from "../assets/salaatendimetno.jpg";
-import dentistsCard from "../assets/cardDentistas.png";
 import photoClient from "../assets/cliente1.jpg";
 import dentist1 from "../assets/dentista1.jpg";
 import dentist2 from "../assets/dentista2.jpg";
@@ -27,7 +35,7 @@ export function Hero({ highlightedService }: HeroProps) {
     window.dispatchEvent(
       new CustomEvent("lp:open-whatsapp-quiz", {
         detail: { phone: CLINIC_PHONE, service: highlightedService ?? null },
-      })
+      }),
     );
   };
 
@@ -40,11 +48,7 @@ export function Hero({ highlightedService }: HeroProps) {
       <div className="lp-container">
         <div className="lp-hero-grid">
           <div className="lp-hero-text">
-            <Space
-              orientation="vertical"
-              size="middle"
-              style={{ width: "100%" }}
-            >
+            <Space direction="vertical" size="middle" style={{ width: "100%" }}>
               <Text className="lp-pill">
                 Clínica Odontológica Especializada
               </Text>
@@ -64,14 +68,20 @@ export function Hero({ highlightedService }: HeroProps) {
                   icon={<WhatsAppOutlined />}
                   onClick={handleClick}
                   className="lp-btn-primary"
+                  aria-label="Agendar avaliação pelo WhatsApp"
                 >
                   Agendar avaliação pelo WhatsApp
                 </Button>
-                <Button type="default" size="large" onClick={scrollToServices}>
+                <Button
+                  type="default"
+                  size="large"
+                  onClick={scrollToServices}
+                  aria-label="Ver tratamentos disponíveis"
+                >
                   Ver tratamentos
                 </Button>
               </Space>
-              <Space orientation="vertical" size={4}>
+              <Space direction="vertical" size={4}>
                 <Space size="middle" align="center">
                   <Rate allowHalf disabled defaultValue={4.9} />
                   <Text strong>4.9/5</Text>
@@ -95,7 +105,7 @@ export function Hero({ highlightedService }: HeroProps) {
             <Card className="lp-hero-card-inner" bordered={false}>
               <img
                 src={heroPhoto}
-                alt="Ambiente da clínica"
+                alt="Recepção moderna e aconchegante da clínica odontológica"
                 className="lp-hero-photo"
                 loading="eager"
               />
@@ -104,7 +114,7 @@ export function Hero({ highlightedService }: HeroProps) {
                 Poucas vagas disponíveis para primeira avaliação.
               </Paragraph>
               <Space
-                orientation="vertical"
+                direction="vertical"
                 size="small"
                 style={{ width: "100%" }}
               >
@@ -143,7 +153,7 @@ export function Hero({ highlightedService }: HeroProps) {
             <div className="lp-media-tile">
               <img
                 src={photoRoom}
-                alt="Sala de atendimento"
+                alt="Sala de atendimento odontológico moderna com equipamentos de última geração"
                 className="lp-media-img"
                 loading="lazy"
                 decoding="async"
@@ -162,7 +172,7 @@ export function Hero({ highlightedService }: HeroProps) {
             <div className="lp-media-tile">
               <img
                 src={heroPhoto}
-                alt="Recepção da clínica"
+                alt="Recepção acolhedora com equipe qualificada pronta para atender"
                 className="lp-media-img"
                 loading="lazy"
                 decoding="async"
@@ -181,7 +191,7 @@ export function Hero({ highlightedService }: HeroProps) {
             <div className="lp-media-tile">
               <img
                 src={photoClient}
-                alt="Pessoa sorrindo"
+                alt="Paciente satisfeita com sorriso radiante após tratamento"
                 className="lp-media-img"
                 loading="lazy"
                 decoding="async"
@@ -197,21 +207,57 @@ export function Hero({ highlightedService }: HeroProps) {
               </div>
             </div>
 
-            <div className="lp-media-tile lp-media-tile--wide">
-              <img
-                src={dentistsCard}
-                alt="Equipe de dentistas"
-                className="lp-media-img"
-                loading="lazy"
-                decoding="async"
-              />
+            <div className="lp-media-tile">
+              <div className="h-[140px] overflow-hidden rounded-t-xl">
+                <Image.PreviewGroup>
+                  <Carousel autoplay autoplaySpeed={3000} effect="fade">
+                    <div>
+                      <Image
+                        src={dentist1}
+                        alt="Dr. Rafael Silva - Implantodontia"
+                        className="w-full h-[140px] object-cover"
+                        preview={{
+                          mask: "Visualizar equipe",
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <Image
+                        src={dentist2}
+                        alt="Dra. Mariana Costa - Ortodontia"
+                        className="w-full h-[140px] object-cover"
+                      />
+                    </div>
+                    <div>
+                      <Image
+                        src={dentist3}
+                        alt="Dr. Lucas Oliveira - Endodontia"
+                        className="w-full h-[140px] object-cover"
+                      />
+                    </div>
+                    <div>
+                      <Image
+                        src={dentist4}
+                        alt="Dra. Juliana Santos - Odontopediatria"
+                        className="w-full h-[140px] object-cover"
+                      />
+                    </div>
+                    <div>
+                      <Image
+                        src={dentist5}
+                        alt="Dr. Pedro Almeida - Periodontia"
+                        className="w-full h-[140px] object-cover"
+                      />
+                    </div>
+                  </Carousel>
+                </Image.PreviewGroup>
+              </div>
               <div className="lp-media-caption">
                 <Text strong className="lp-media-caption-title">
-                  Equipe preparada
+                  Equipe especializada
                 </Text>
                 <Text type="secondary" className="lp-media-caption-text">
-                  Dentistas bem treinados e capacitados, prontos para te atender
-                  com os melhores equipamentos.
+                  Profissionais qualificados prontos para cuidar do seu sorriso.
                 </Text>
               </div>
             </div>

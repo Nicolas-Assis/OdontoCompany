@@ -30,7 +30,7 @@ type OpenQuizEventDetail = {
 };
 
 function isOpenQuizEvent(
-  value: unknown
+  value: unknown,
 ): value is CustomEvent<OpenQuizEventDetail> {
   return (
     typeof value === "object" &&
@@ -43,7 +43,7 @@ export function CTAWhatsApp({ selectedService }: CTAWhatsAppProps) {
   const [quizOpen, setQuizOpen] = useState(false);
   const [quizStep, setQuizStep] = useState(0);
   const [serviceOverride, setServiceOverride] = useState<DentalService | null>(
-    null
+    null,
   );
   const [phoneOverride, setPhoneOverride] = useState<string | null>(null);
 
@@ -59,7 +59,7 @@ export function CTAWhatsApp({ selectedService }: CTAWhatsAppProps) {
         service: activeService,
         quiz: quizAnswers,
       }),
-    [activePhone, activeService, quizAnswers]
+    [activePhone, activeService, quizAnswers],
   );
 
   const canGoNext = useMemo(() => {
@@ -120,7 +120,7 @@ export function CTAWhatsApp({ selectedService }: CTAWhatsAppProps) {
     <section className="lp-section lp-cta-section">
       <div className="lp-container">
         <Card variant={"borderless"} className="lp-cta">
-          <Space orientation="vertical" size="small">
+          <Space direction="vertical" size="small">
             <h2>Pronto para cuidar do seu sorriso?</h2>
             <Paragraph>
               {selectedService ? (
@@ -143,6 +143,7 @@ export function CTAWhatsApp({ selectedService }: CTAWhatsAppProps) {
             icon={<WhatsAppOutlined />}
             className="lp-btn-primary lp-btn-large"
             onClick={handleClick}
+            aria-label="Enviar mensagem no WhatsApp"
           >
             Enviar mensagem no WhatsApp
           </Button>

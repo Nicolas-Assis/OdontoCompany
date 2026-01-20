@@ -3,35 +3,41 @@ import { Hero } from "../components/Hero";
 import { Services } from "../components/Services";
 import { FlowSteps } from "../components/FlowSteps";
 import { CTAWhatsApp } from "../components/CTAWhatsApp";
+import { ContactSection } from "../components/ContactSection";
 import { RootLayout } from "./layout";
 import type { DentalService } from "../lib/whatsapp";
 
 const DENTAL_SERVICES: DentalService[] = [
   {
     id: "limpeza",
+    slug: "limpeza",
     name: "Limpeza e prevenção",
     description:
       "Limpeza profissional, profilaxia e orientações para manter sua saúde bucal em dia.",
   },
   {
     id: "clareamento",
+    slug: "clareamento",
     name: "Clareamento dental",
     description:
       "Tratamentos de clareamento seguros para um sorriso mais branco e bonito.",
   },
   {
     id: "aparelho",
+    slug: "aparelho",
     name: "Aparelho ortodôntico",
     description: "Correção de alinhamento e mordida para um sorriso harmônico.",
   },
   {
     id: "implantes",
+    slug: "implantes",
     name: "Implantes dentários",
     description:
       "Substituição de dentes perdidos com conforto, segurança e estética.",
   },
   {
     id: "estetica",
+    slug: "estetica",
     name: "Estética dental",
     description:
       "Lentes de contato, facetas e outros tratamentos para transformar seu sorriso.",
@@ -40,7 +46,7 @@ const DENTAL_SERVICES: DentalService[] = [
 
 export function LandingPage() {
   const [selectedService, setSelectedService] = useState<DentalService | null>(
-    null
+    null,
   );
 
   return (
@@ -53,6 +59,7 @@ export function LandingPage() {
       />
       <FlowSteps />
       <CTAWhatsApp selectedService={selectedService} />
+      <ContactSection />
     </RootLayout>
   );
 }
