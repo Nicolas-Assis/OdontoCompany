@@ -24,7 +24,7 @@ import {
 } from "@ant-design/icons";
 
 const { Paragraph, Text, Title } = Typography;
-const CLINIC_PHONE = "5562986018386";
+const CLINIC_PHONE = "5515981887574";
 
 const serviceIcons: Record<string, React.ReactNode> = {
   limpeza: <ClearOutlined className="text-2xl text-emerald-600" />,

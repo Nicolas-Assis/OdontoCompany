@@ -21,7 +21,7 @@ import dentist4 from "../assets/dentista4.jpg";
 import dentist5 from "../assets/dentista5.jpg";
 
 const { Title, Paragraph, Text } = Typography;
-const CLINIC_PHONE = "5562986018386";
+const CLINIC_PHONE = "5515981887574";
 
 interface HeroProps {
   highlightedService?: DentalService | null;

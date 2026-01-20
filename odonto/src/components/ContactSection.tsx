@@ -165,7 +165,7 @@ export function ContactSection() {
                 size="large"
                 icon={<WhatsAppOutlined />}
                 className="w-full bg-emerald-600 hover:bg-emerald-700 border-0 h-12 text-base font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200"
-                href="https://wa.me/5562986018386"
+                href="https://wa.me/5515981887574"
                 target="_blank"
                 rel="noopener noreferrer"
               >

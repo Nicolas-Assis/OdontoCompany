@@ -18,7 +18,7 @@ import {
 import { WhatsAppOutlined } from "@ant-design/icons";
 
 const { Paragraph, Text } = Typography;
-const CLINIC_PHONE = "5562986018386";
+const CLINIC_PHONE = "5515981887574";
 
 interface CTAWhatsAppProps {
   selectedService: DentalService | null;
