@@ -133,7 +133,7 @@ export function ContactSection() {
                   </Space>
                   <div className="pl-10">
                     <Text className="text-slate-600">
-                      contato@odontoclinica.com.br
+                      odontocompanyitapetininga@gmail.com
                     </Text>
                   </div>
                 </div>
